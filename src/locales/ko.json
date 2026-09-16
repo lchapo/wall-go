@@ -61,6 +61,8 @@
     "ai": "AI",
     "wins_other": "{{count}}승",
     "draws_other": "{{count}}무",
+    "turnOf": "{{name}} 차례",
+    "turnYours": "당신 차례",
     "resetSeries": "전적 초기화"
   },
   "seo": {

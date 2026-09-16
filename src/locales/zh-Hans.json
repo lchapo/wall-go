@@ -61,6 +61,8 @@
     "ai": "电脑",
     "wins_other": "{{count}} 胜",
     "draws_other": "{{count}} 和",
+    "turnOf": "轮到 {{name}}",
+    "turnYours": "轮到你",
     "resetSeries": "重置战绩"
   },
   "seo": {

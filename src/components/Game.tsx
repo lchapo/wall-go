@@ -3,6 +3,7 @@ import GameButton from './ui/GameButton'
 import Navbar from './ui/Navbar'
 import Board from './Board/Board'
 import clsx from 'clsx'
+import { playerDotClass } from '@/lib/color'
 import { useTranslation } from 'react-i18next'
 import { useGame } from '@/store/index'
 import { useMatch } from '@/store/match'
@@ -16,6 +17,7 @@ import ConfirmDialog from './ui/ConfirmDialog'
 import ColorPickDialog from './ui/ColorPickDialog'
 import HistorySlider from './ui/HistorySlider'
 import ScoreRow from './ui/ScoreRow'
+import TurnBanner from './ui/TurnBanner'
 import TurnTimer from './ui/TurnTimer'
 
 export default function Game({
@@ -368,33 +370,32 @@ export default function Game({
             <>
               {t('game.winner', '🥇 Winner:')}
               <span
-                className={
-                  displayGameResult.winner === 'R'
-                    ? 'inline-block w-6 h-6 rounded-full bg-rose-500 dark:bg-rose-400 border-2 border-rose-300 dark:border-rose-500 shadow-sm mx-1 align-middle'
-                    : 'inline-block w-6 h-6 rounded-full bg-indigo-500 dark:bg-indigo-400 border-2 border-indigo-300 dark:border-indigo-500 shadow-sm mx-1 align-middle'
-                }
+                className={clsx(
+                  'inline-block w-6 h-6 rounded-full border-2 shadow-sm mx-1 align-middle',
+                  playerDotClass(displayGameResult.winner),
+                )}
                 aria-label={names[displayGameResult.winner]}
               />
               <span className="text-xl sm:text-2xl">{names[displayGameResult.winner]}</span>
             </>
           ) : null
         ) : (
-          <>
-            Wall Go ·{' '}
-            {displayPhase === 'placing'
-              ? t('game.phase.placing', 'Placement Phase')
-              : displayPhase === 'playing'
-                ? t('game.phase.playing', 'Action Phase')
-                : t('game.phase.finished', 'Scoring Phase')}
-          </>
+          <>Wall Go</>
         )}
       </h1>
+      <TurnBanner
+        phase={displayPhase}
+        turn={displayTurn}
+        name={names[displayTurn]}
+        isYou={gameMode === 'ai' && displayTurn !== aiSide}
+      />
       <ScoreRow
         phase={displayPhase}
         score={displayResult.score ?? {}}
         names={names}
         wins={wins}
         draws={gameMode === 'ai' ? aiWins.draws : pvpDraws}
+        activePlayer={displayPhase === 'finished' ? null : displayTurn}
         onResetSeries={resetSeries}
       >
         {phase === 'finished' && previewValue === null && (

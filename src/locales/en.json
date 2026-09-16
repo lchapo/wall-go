@@ -63,6 +63,8 @@
     "wins_other": "{{count}} wins",
     "draws_one": "{{count}} draw",
     "draws_other": "{{count}} draws",
+    "turnOf": "{{name}}'s turn",
+    "turnYours": "Your turn",
     "resetSeries": "Reset series"
   },
   "seo": {

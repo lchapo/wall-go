@@ -61,6 +61,8 @@
     "ai": "AI",
     "wins_other": "{{count}} 勝",
     "draws_other": "{{count}} 引き分け",
+    "turnOf": "{{name}} の番",
+    "turnYours": "あなたの番",
     "resetSeries": "成績をリセット"
   },
   "seo": {

@@ -63,6 +63,8 @@
     "wins_other": "{{count}} victorias",
     "draws_one": "{{count}} empate",
     "draws_other": "{{count}} empates",
+    "turnOf": "Turno de {{name}}",
+    "turnYours": "Tu turno",
     "resetSeries": "Reiniciar serie"
   },
   "seo": {
