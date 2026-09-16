@@ -22,13 +22,11 @@ type GameHook = { current: State }
  * Finish the placing phase along the empty top row.
  *
  * The board starts with two stones per player already down, so exactly four
- * placements remain and they alternate Red, Blue, Blue, Red. Filling the row in
- * the order 3,0,1,2 leaves (0,0)=B (1,0)=B (2,0)=R (3,0)=R, so the player that
- * opens the action phase (Blue) owns (0,0). Afterwards phase is 'playing' and
- * it is Blue's turn.
+ * placements remain and they alternate Red, Blue, Blue, Red. Afterwards:
+ * (0,0)=R (1,0)=B (2,0)=B (3,0)=R, phase is 'playing' and it is Red's turn.
  */
 function finishPlacing(result: GameHook) {
-  for (const x of [3, 0, 1, 2]) {
+  for (const x of [0, 1, 2, 3]) {
     act(() => {
       result.current.placeStone({ x, y: 0 })
     })
@@ -69,8 +67,8 @@ describe('Game Store', () => {
       result.current.placeStone({ x: 0, y: 3 })
     })
     expect(result.current.phase).toBe('playing')
-    // Red places the last counter; Blue opens the action phase.
-    expect(result.current.turn).toBe(PLAYER_LIST[1])
+    // Red places the last counter and opens the action phase.
+    expect(result.current.turn).toBe(PLAYER_LIST[0])
     for (const p of PLAYER_LIST) {
       expect(result.current.stonesPlaced[p]).toBe(STONES_PER_PLAYER)
     }
@@ -86,10 +84,10 @@ describe('Game Store', () => {
       result.current.moveTo({ x: 0, y: 1 })
     })
     expect(result.current.board[0][0].stone).toBe(null)
-    expect(result.current.board[1][0].stone).toBe(PLAYER_LIST[1])
+    expect(result.current.board[1][0].stone).toBe(PLAYER_LIST[0])
     expect(result.current.stepsTaken).toBe(1)
     // Moving does not end the turn — a wall still has to be built.
-    expect(result.current.turn).toBe(PLAYER_LIST[1])
+    expect(result.current.turn).toBe(PLAYER_LIST[0])
   })
 
   it('buildWall: 能建牆', () => {
@@ -102,9 +100,9 @@ describe('Game Store', () => {
     act(() => {
       result.current.buildWall({ x: 0, y: 0 }, 'right')
     })
-    expect(result.current.board[0][1].wallLeft).toBe(PLAYER_LIST[1])
+    expect(result.current.board[0][1].wallLeft).toBe(PLAYER_LIST[0])
     // Building a wall ends the turn.
-    expect(result.current.turn).toBe(PLAYER_LIST[0])
+    expect(result.current.turn).toBe(PLAYER_LIST[1])
     expect(result.current.selected).toBeUndefined()
     expect(result.current.stepsTaken).toBe(0)
   })
@@ -198,7 +196,7 @@ describe('Game Store', () => {
     act(() => {
       result.current.moveTo({ x: 6, y: 6 })
     })
-    expect(result.current.board[0][0].stone).toBe(PLAYER_LIST[1])
+    expect(result.current.board[0][0].stone).toBe(PLAYER_LIST[0])
     expect(result.current.board[6][6].stone).toBe(null)
     expect(result.current.stepsTaken).toBe(0)
   })
@@ -228,7 +226,7 @@ describe('Game Store', () => {
     expect(result.current.board[1][2].wallLeft).toBe(null)
 
     // None of the rejected builds may end the turn or grow the history.
-    expect(result.current.turn).toBe(PLAYER_LIST[1])
+    expect(result.current.turn).toBe(PLAYER_LIST[0])
     expect(result.current.selected).toEqual({ x: 0, y: 0 })
     expect(result.current._history).toHaveLength(historyLength)
   })
@@ -251,7 +249,7 @@ describe('Game Store', () => {
     act(() => {
       result.current.moveTo({ x: 0, y: 1 })
     })
-    expect(result.current.board[0][0].stone).toBe(PLAYER_LIST[1])
+    expect(result.current.board[0][0].stone).toBe(PLAYER_LIST[0])
     expect(result.current.board[1][0].stone).toBe(null)
     act(() => {
       result.current.buildWall({ x: 0, y: 0 }, 'right')

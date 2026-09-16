@@ -19,13 +19,6 @@ interface ScoreRowProps {
   children?: React.ReactNode
 }
 
-/**
- * Score pills read left-to-right in action-phase turn order, matching the colour
- * order the setup screen offers. That phase opens with the player *after* the one
- * who places first (see `placeStone`), so this is `PLAYER_LIST` rotated by one.
- */
-const DISPLAY_ORDER = PLAYER_LIST.map((_, i) => PLAYER_LIST[(i + 1) % PLAYER_LIST.length])
-
 export default function ScoreRow({
   phase,
   score,
@@ -41,7 +34,7 @@ export default function ScoreRow({
 
   return (
     <div className="flex flex-wrap gap-3 animate-fade-in items-center justify-center">
-      {DISPLAY_ORDER.map((p) => (
+      {PLAYER_LIST.map((p) => (
         <span
           key={p}
           className={clsx(

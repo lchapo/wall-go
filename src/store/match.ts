@@ -16,7 +16,7 @@ export interface MatchState {
   matchId: number
   /** The two PvP player names, stable across a series. */
   pvpNames: [string, string]
-  /** This match's colour assignment. Red places first; Blue opens the action phase. */
+  /** This match's colour assignment. Red always moves first. */
   colorToName: Record<Player, string>
   /** PvP win tally, keyed by player NAME so it survives colour swaps. */
   pvpWins: Record<string, number>

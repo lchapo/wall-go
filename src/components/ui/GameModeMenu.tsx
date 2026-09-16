@@ -67,12 +67,12 @@ export default function GameModeMenu({
     return [a, a === b ? `${b} (2)` : b]
   }
 
-  function startPvp(blueIsFirstName: boolean) {
+  function startPvp(redIsFirstName: boolean) {
     const [a, b] = resolveNames()
     const match = useMatch.getState()
     match.setPvpNames([a, b])
     // `startMatch` takes (redName, blueName).
-    match.startMatch(blueIsFirstName ? b : a, blueIsFirstName ? a : b)
+    match.startMatch(redIsFirstName ? a : b, redIsFirstName ? b : a)
     setMode('pvp')
   }
 
@@ -115,7 +115,7 @@ export default function GameModeMenu({
             </GameButton>
           ))}
         </div>
-        {/* 2-player setup: names, then colours (Red places first; Blue opens the action phase) */}
+        {/* 2-player setup: names, then who plays Red (Red always moves first) */}
         <div
           style={{ transition: 'opacity 0.3s, max-height 0.3s, margin 0.3s' }}
           className={
@@ -148,14 +148,14 @@ export default function GameModeMenu({
               className="w-full mb-4 rounded border border-zinc-300 dark:border-zinc-600 px-3 py-2 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
             />
             <span className="text-zinc-700 dark:text-zinc-200 mb-3 text-center">
-              {t('menu.pvp.playsBlue', 'Who plays Blue (moves first)?')}
+              {t('menu.pvp.playsRed', 'Who plays Red (moves first)?')}
             </span>
             <div className="flex flex-col gap-2 w-full">
               <GameButton onClick={() => startPvp(true)}>
-                🔵 {resolveNames()[0]} · 🔴 {resolveNames()[1]}
+                🔴 {resolveNames()[0]} · 🔵 {resolveNames()[1]}
               </GameButton>
               <GameButton onClick={() => startPvp(false)}>
-                🔵 {resolveNames()[1]} · 🔴 {resolveNames()[0]}
+                🔴 {resolveNames()[1]} · 🔵 {resolveNames()[0]}
               </GameButton>
             </div>
             <GameButton onClick={() => setShowPvpSetup(false)} className="mt-2 text-sm" text>
@@ -193,11 +193,11 @@ export default function GameModeMenu({
                 </select>
               </label>
               <div className="flex gap-4 justify-center w-full">
-                {/* Blue opens the action phase, so "First" deals the human Blue. Each
-                  button is tinted with the colour it hands you. */}
+                {/* Red moves first, so "First" deals the human Red. Each button is
+                  tinted with the colour it hands you. */}
                 <GameButton
-                  onClick={() => startAi('R')}
-                  className="!bg-indigo-500 !dark:!bg-indigo-400 !text-white !shadow-lg hover:!bg-indigo-600 hover:!dark:bg-indigo-300 focus:!ring-indigo-400 focus:!dark:ring-indigo-300 transition-colors px-4 py-2 text-base font-semibold"
+                  onClick={() => startAi('B')}
+                  className="!bg-rose-400 !dark:!bg-rose-500 !text-white !shadow-lg hover:!bg-rose-500 hover:!dark:bg-rose-400 focus:!ring-rose-400 focus:!dark:ring-rose-300 transition-colors px-4 py-2 text-base font-semibold"
                 >
                   {t('menu.ai.first', '🐰 First')}
                 </GameButton>
@@ -209,8 +209,8 @@ export default function GameModeMenu({
                   {t('menu.ai.random', '🎲 Random')}
                 </GameButton>
                 <GameButton
-                  onClick={() => startAi('B')}
-                  className="!bg-rose-400 !dark:!bg-rose-500 !text-white !shadow-lg hover:!bg-rose-500 hover:!dark:bg-rose-400 focus:!ring-rose-400 focus:!dark:ring-rose-300 transition-colors px-4 py-2 text-base font-semibold"
+                  onClick={() => startAi('R')}
+                  className="!bg-indigo-500 !dark:!bg-indigo-400 !text-white !shadow-lg hover:!bg-indigo-600 hover:!dark:bg-indigo-300 focus:!ring-indigo-400 focus:!dark:ring-indigo-300 transition-colors px-4 py-2 text-base font-semibold"
                 >
                   {t('menu.ai.second', '🐢 Second')}
                 </GameButton>
