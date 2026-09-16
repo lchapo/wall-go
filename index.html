@@ -2,30 +2,123 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- SEO -->
-    <title>Wall Go | Online Strategy Board Game | Devil's Plan Inspired</title>
-    <meta name="description" content="Wall Go – Free online strategy board game inspired by Devil’s Plan. Play solo or with friends, territory scoring, undo/redo, and a modern UI. No signup needed, just play!" />
-    <meta name="keywords" content="Wall Go, Devil's Plan, board game, strategy game, undo redo, territory, open source, browser game, wallgo, devil's plan game, wall go single player" />
-    <meta name="robots" content="index,follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Mobile -->
-    <meta name="theme-color" content="#f43f5e" />
+    <!-- SEO. The language-dependent tags are re-emitted by src/components/SeoHelmet.tsx after
+         mount; the English copy here must match en.json `seo.*` so nothing flickers. -->
+    <title>Wall Go – Play Free Online, 2 Players or vs AI | Devil's Plan Board Game</title>
+    <meta name="description" content="Play Wall Go free in your browser: the 7×7 wall-building territory game from Netflix's The Devil's Plan. Two players on one screen or against an AI, named players, series scoreboard, undo and move history. No signup." />
+    <meta name="keywords" content="Wall Go, Wall Go game, Wall Go online, play Wall Go, Devil's Plan, Devil's Plan game, Devil's Plan season 2, strategy board game, territory game, 2 player game, browser game, free board game, 牆壁圍棋, wallgo" />
+    <meta name="author" content="Lucas Chapin" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href="https://lchapo.github.io/wall-go/" />
 
-    <!-- Open Graph -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Wall Go | Online Strategy Board Game | Devil's Plan Inspired" />
-    <meta property="og:description" content="Wall Go – Free online strategy board game inspired by Devil’s Plan. Play solo or with friends, territory scoring, undo/redo, and a modern UI. No signup needed, just play!" />
+    <meta property="og:site_name" content="Wall Go" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="zh_TW" />
+    <meta property="og:locale:alternate" content="zh_CN" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+    <meta property="og:locale:alternate" content="es_ES" />
+    <meta property="og:title" content="Wall Go – Play Free Online, 2 Players or vs AI | Devil's Plan Board Game" />
+    <meta property="og:description" content="Play Wall Go free in your browser: the 7×7 wall-building territory game from Netflix's The Devil's Plan. Two players on one screen or against an AI, named players, series scoreboard, undo and move history. No signup." />
     <meta property="og:url" content="https://lchapo.github.io/wall-go/" />
-    <meta property="og:image" content="https://lchapo.github.io/wall-go/cover.png" />
+    <meta property="og:image" content="https://lchapo.github.io/wall-go/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Wall Go: a 7×7 board with red and blue pieces and walls. Build, block, conquer." />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Wall Go | Online Strategy Board Game | Devil's Plan Inspired" />
-    <meta name="twitter:description" content="Wall Go – Free online strategy board game inspired by Devil’s Plan. Play solo or with friends, territory scoring, undo/redo, and a modern UI. No signup needed, just play!" />
-    <meta name="twitter:image" content="https://lchapo.github.io/wall-go/cover.png" />
-    <link rel="canonical" href="https://lchapo.github.io/wall-go/" />
-    <link rel="icon" type="image/x-icon" href="%BASE_URL%favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="twitter:title" content="Wall Go – Play Free Online, 2 Players or vs AI | Devil's Plan Board Game" />
+    <meta name="twitter:description" content="Play Wall Go free in your browser: the 7×7 wall-building territory game from Netflix's The Devil's Plan. Two players on one screen or against an AI, named players, series scoreboard, undo and move history. No signup." />
+    <meta name="twitter:image" content="https://lchapo.github.io/wall-go/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Wall Go: a 7×7 board with red and blue pieces and walls. Build, block, conquer." />
+
+    <!-- Icons & PWA -->
+    <meta name="theme-color" content="#f43f5e" />
+    <meta name="apple-mobile-web-app-title" content="Wall Go" />
+    <link rel="icon" type="image/png" sizes="32x32" href="%BASE_URL%favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="%BASE_URL%favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="%BASE_URL%apple-touch-icon.png" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+
+    <!-- Structured data. The FAQ entries mirror `landing.faq` in src/locales/en.json;
+         Google only honours FAQ markup whose text is visible on the page. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://lchapo.github.io/wall-go/#website",
+            "url": "https://lchapo.github.io/wall-go/",
+            "name": "Wall Go",
+            "inLanguage": ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es"]
+          },
+          {
+            "@type": "VideoGame",
+            "@id": "https://lchapo.github.io/wall-go/#game",
+            "name": "Wall Go",
+            "alternateName": ["Wall Go game", "Devil's Plan Wall Go", "牆壁圍棋", "墙壁围棋"],
+            "url": "https://lchapo.github.io/wall-go/",
+            "image": "https://lchapo.github.io/wall-go/og-image.jpg",
+            "description": "Play Wall Go free in your browser: the 7×7 wall-building territory game from Netflix's The Devil's Plan. Two players on one screen or against an AI, named players, series scoreboard, undo and move history. No signup.",
+            "genre": ["Strategy", "Abstract", "Board game"],
+            "gamePlatform": "Web Browser",
+            "applicationCategory": "Game",
+            "operatingSystem": "Any",
+            "playMode": ["SinglePlayer", "MultiPlayer"],
+            "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 1, "maxValue": 2 },
+            "inLanguage": ["en", "zh-Hant", "zh-Hans", "ja", "ko", "es"],
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "author": { "@type": "Person", "name": "Lucas Chapin", "url": "https://github.com/lchapo" },
+            "isBasedOn": { "@type": "SoftwareSourceCode", "name": "schaoss/wall-go", "url": "https://github.com/schaoss/wall-go", "author": { "@type": "Person", "name": "Gary Chu" } },
+            "license": "https://opensource.org/licenses/MIT"
+          },
+          {
+            "@type": "FAQPage",
+            "@id": "https://lchapo.github.io/wall-go/#faq",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is Wall Go free to play?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. This version is free, has no ads and needs no account. The code is open source on GitHub." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I play Wall Go against the computer?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Choose \"vs AI\" on the menu and pick one of four levels. You can also choose whether you move first or second." }
+              },
+              {
+                "@type": "Question",
+                "name": "Can two people play on one device?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Yes. Choose \"2 Players\", enter both names, and pass the device between turns. Wins and draws are tallied across a series." }
+              },
+              {
+                "@type": "Question",
+                "name": "Is there online multiplayer?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Not yet. Both players currently need to share a screen. Online play is on the roadmap." }
+              },
+              {
+                "@type": "Question",
+                "name": "Where does Wall Go come from?",
+                "acceptedAnswer": { "@type": "Answer", "text": "Wall Go was played in season 2 of The Devil's Plan, a Korean reality competition on Netflix. The show's version uses the same 7×7 board, movement and wall rules." }
+              },
+              {
+                "@type": "Question",
+                "name": "How is this different from the original schaoss/wall-go?",
+                "acceptedAnswer": { "@type": "Answer", "text": "It is a fork that adds named players, a series scoreboard, a move-history slider and other quality-of-life features. The rules and core gameplay are unchanged." }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
