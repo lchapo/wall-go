@@ -25,7 +25,13 @@
       "back": "返回"
     },
     "confirmHome": "游戏尚未结束，确定要回到首页吗？\n目前进度将会消失。",
-    "home": "回到首页"
+    "home": "回到首页",
+    "pvp": {
+      "names": "玩家名称：",
+      "player1": "玩家一",
+      "player2": "玩家二",
+      "playsRed": "谁执红先手？"
+    }
   },
   "rule": {
     "title": "游戏规则说明",
@@ -49,7 +55,13 @@
       "left": "左",
       "right": "右",
       "aria": "在({{x}},{{y}})建{{dir}}墙"
-    }
+    },
+    "paused": "已暂停",
+    "you": "你",
+    "ai": "电脑",
+    "wins_other": "{{count}} 胜",
+    "draws_other": "{{count}} 和",
+    "resetSeries": "重置战绩"
   },
   "seo": {
     "title": "Wall Go（墙壁围棋）| 在线策略桌游 | Devil's Plan 同款游戏",
@@ -61,6 +73,15 @@
     "redo": "重做",
     "undoAria": "撤销",
     "redoAria": "重做",
-    "menu": "主菜单"
+    "menu": "主菜单",
+    "pause": "暂停",
+    "resume": "继续",
+    "pauseAria": "暂停"
+  },
+  "history": {
+    "moveCounter": "第 {{current}} / {{total}} 手",
+    "jumpTo": "跳到第 {{n}} 手",
+    "sliderAria": "回到先前的一手",
+    "previewing": "（预览）"
   }
 }

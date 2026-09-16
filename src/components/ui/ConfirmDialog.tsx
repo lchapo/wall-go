@@ -34,14 +34,22 @@ export default function ConfirmDialog({
   }, [open])
 
   // 關閉時觸發 onCancel
+  // Esc dismisses the native dialog without telling React. Without this the
+  // parent would keep `open` true while the dialog is closed, and re-opening
+  // would silently do nothing. Both events are handled because browsers differ
+  // over which one an Esc dismissal produces.
   useEffect(() => {
     const dialog = dialogRef.current
     if (!dialog) return
-    const handleClose = () => {
+    const handleDismiss = () => {
       if (open) onCancel()
     }
-    dialog.addEventListener('close', handleClose)
-    return () => dialog.removeEventListener('close', handleClose)
+    dialog.addEventListener('close', handleDismiss)
+    dialog.addEventListener('cancel', handleDismiss)
+    return () => {
+      dialog.removeEventListener('close', handleDismiss)
+      dialog.removeEventListener('cancel', handleDismiss)
+    }
   }, [open, onCancel])
 
   useEffect(() => {

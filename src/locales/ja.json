@@ -25,7 +25,13 @@
       "back": "戻る"
     },
     "confirmHome": "ゲームはまだ終了していません。本当にホームに戻りますか？\n現在の進行状況は失われます。",
-    "home": "ホームに戻る"
+    "home": "ホームに戻る",
+    "pvp": {
+      "names": "プレイヤー名：",
+      "player1": "プレイヤー1",
+      "player2": "プレイヤー2",
+      "playsRed": "赤（先手）はどちら？"
+    }
   },
   "rule": {
     "title": "ゲームルール",
@@ -49,7 +55,13 @@
       "left": "左",
       "right": "右",
       "aria": "({{x}},{{y}}) に {{dir}} の壁を設置"
-    }
+    },
+    "paused": "一時停止中",
+    "you": "あなた",
+    "ai": "AI",
+    "wins_other": "{{count}} 勝",
+    "draws_other": "{{count}} 引き分け",
+    "resetSeries": "成績をリセット"
   },
   "seo": {
     "title": "Wall Go｜戦略ボードゲーム｜Devil's Plan インスパイア",
@@ -61,6 +73,15 @@
     "redo": "やり直し",
     "undoAria": "元に戻す",
     "redoAria": "やり直し",
-    "menu": "メニュー"
+    "menu": "メニュー",
+    "pause": "一時停止",
+    "resume": "再開",
+    "pauseAria": "一時停止"
+  },
+  "history": {
+    "moveCounter": "{{current}} / {{total}} 手目",
+    "jumpTo": "{{n}} 手目へ移動",
+    "sliderAria": "前の手に戻す",
+    "previewing": "（プレビュー）"
   }
 }

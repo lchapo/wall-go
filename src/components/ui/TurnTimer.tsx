@@ -6,18 +6,20 @@ export default function TurnTimer({
   timeLimit = 90000,
   turn,
   phase,
+  paused,
 }: {
   timeLeft: number
   timeLimit?: number
   turn: Player
   phase: Phase
+  paused?: boolean
 }) {
   const widthPercent = Math.max(0, Math.min(100, (timeLeft / timeLimit) * 100))
   return (
     <div className="fixed top-0 w-full h-1 bg-transparent overflow-hidden">
       <div
         className={
-          `${phase === 'playing' ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500 ` +
+          `${phase === 'playing' ? (paused ? 'opacity-40' : 'opacity-100') : 'opacity-0'} transition-opacity duration-500 ` +
           `${playerColorClass(turn)} h-full transition-all duration-100 mr-auto rounded-lg`
         }
         style={{ width: `${widthPercent}%` }}

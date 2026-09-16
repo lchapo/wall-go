@@ -61,6 +61,7 @@ export interface State extends GameSnapshot {
   resetGame: () => void
   undo: () => void
   redo: () => void
+  jumpTo: (index: number) => void
   canUndo: boolean
   canRedo: boolean
   setPhase: (phase: Phase) => void

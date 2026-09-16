@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react'
 import GameButton from './GameButton'
 import { useTranslation } from 'react-i18next'
 import type { AiLevel, GameMode, AiSide } from '@/lib/types'
+import { useMatch } from '@/store/match'
 
 const GAME_MODES: GameMode[] = ['pvp', 'ai']
 
@@ -21,7 +22,11 @@ export default function GameModeMenu({
 }) {
   const { t } = useTranslation()
   const [showAiSelect, setShowAiSelect] = useState(false)
+  const [showPvpSetup, setShowPvpSetup] = useState(false)
   const [selectedLevel, setSelectedLevel] = useState<AiLevel>('middle')
+  const storedNames = useMatch((s) => s.pvpNames)
+  const [name1, setName1] = useState(storedNames[0])
+  const [name2, setName2] = useState(storedNames[1])
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme')
@@ -53,6 +58,29 @@ export default function GameModeMenu({
     if (open) document.addEventListener('mousedown', handleClick)
     return () => document.removeEventListener('mousedown', handleClick)
   }, [open])
+
+  /** Resolve the two names, filling blanks and disambiguating a duplicate. */
+  function resolveNames(): [string, string] {
+    const a = name1.trim() || t('menu.pvp.player1', 'Player 1')
+    const b = name2.trim() || t('menu.pvp.player2', 'Player 2')
+    return [a, a === b ? `${b} (2)` : b]
+  }
+
+  function startPvp(redIsFirstName: boolean) {
+    const [a, b] = resolveNames()
+    const match = useMatch.getState()
+    match.setPvpNames([a, b])
+    match.startMatch(redIsFirstName ? a : b, redIsFirstName ? b : a)
+    setMode('pvp')
+  }
+
+  function startAi(side: AiSide) {
+    setAiLevel(selectedLevel)
+    setAiSide(side)
+    useMatch.getState().startMatch()
+    setMode('ai')
+  }
+
   // Removed the original toggle button and language dropdown, replaced with a shared component
   return (
     <div className="flex flex-col items-center justify-center min-h-dvh bg-gradient-to-br from-rose-50 via-indigo-50 to-amber-50 dark:from-zinc-900 dark:via-zinc-800 dark:to-zinc-900 p-4">
@@ -66,13 +94,71 @@ export default function GameModeMenu({
         {GAME_MODES.map((m) => (
           <GameButton
             key={m}
-            onClick={m === 'ai' ? () => setShowAiSelect(true) : () => setMode(m as GameMode)}
+            onClick={
+              m === 'ai'
+                ? () => {
+                    setShowPvpSetup(false)
+                    setShowAiSelect(true)
+                  }
+                : () => {
+                    setShowAiSelect(false)
+                    setShowPvpSetup(true)
+                  }
+            }
             className="text-lg py-3"
-            active={m === 'ai' && showAiSelect}
+            active={(m === 'ai' && showAiSelect) || (m === 'pvp' && showPvpSetup)}
           >
             {t(`menu.mode.${m}`)}
           </GameButton>
         ))}
+      </div>
+      {/* 2-player setup: names, then who plays Red (Red always moves first) */}
+      <div
+        style={{ transition: 'opacity 0.3s, max-height 0.3s, margin 0.3s' }}
+        className={
+          'w-full flex justify-center' +
+          (showPvpSetup
+            ? ' opacity-100 max-h-96 mt-6 flex-col gap-2 items-center animate-fade-in transition-all duration-500'
+            : ' opacity-0 max-h-0 overflow-hidden pointer-events-none flex-col gap-2 items-center transition-all duration-500')
+        }
+      >
+        <div className="flex flex-col items-center w-full max-w-xs">
+          <span className="text-zinc-700 dark:text-zinc-200 mb-3">
+            {t('menu.pvp.names', 'Player names:')}
+          </span>
+          <input
+            type="text"
+            value={name1}
+            maxLength={16}
+            onChange={(e) => setName1(e.target.value)}
+            placeholder={t('menu.pvp.player1', 'Player 1')}
+            aria-label={t('menu.pvp.player1', 'Player 1')}
+            className="w-full mb-2 rounded border border-zinc-300 dark:border-zinc-600 px-3 py-2 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          <input
+            type="text"
+            value={name2}
+            maxLength={16}
+            onChange={(e) => setName2(e.target.value)}
+            placeholder={t('menu.pvp.player2', 'Player 2')}
+            aria-label={t('menu.pvp.player2', 'Player 2')}
+            className="w-full mb-4 rounded border border-zinc-300 dark:border-zinc-600 px-3 py-2 bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+          <span className="text-zinc-700 dark:text-zinc-200 mb-3 text-center">
+            {t('menu.pvp.playsRed', 'Who plays Red (moves first)?')}
+          </span>
+          <div className="flex flex-col gap-2 w-full">
+            <GameButton onClick={() => startPvp(true)}>
+              🔴 {resolveNames()[0]} · 🔵 {resolveNames()[1]}
+            </GameButton>
+            <GameButton onClick={() => startPvp(false)}>
+              🔴 {resolveNames()[1]} · 🔵 {resolveNames()[0]}
+            </GameButton>
+          </div>
+          <GameButton onClick={() => setShowPvpSetup(false)} className="mt-2 text-sm" text>
+            {t('menu.ai.back', 'Back')}
+          </GameButton>
+        </div>
       </div>
       {/* AI difficulty and turn order selection merged (difficulty is a dropdown menu) */}
       <div
@@ -105,33 +191,20 @@ export default function GameModeMenu({
             </label>
             <div className="flex gap-4 justify-center w-full">
               <GameButton
-                onClick={() => {
-                  setAiLevel(selectedLevel)
-                  setAiSide('B')
-                  setMode('ai')
-                }}
+                onClick={() => startAi('B')}
                 className="!bg-rose-400 !dark:!bg-rose-500 !text-white !shadow-lg hover:!bg-rose-500 hover:!dark:bg-rose-400 focus:!ring-rose-400 focus:!dark:ring-rose-300 transition-colors px-4 py-2 text-base font-semibold"
               >
                 {t('menu.ai.first', '🐰 First')}
               </GameButton>
               <GameButton
-                onClick={() => {
-                  const side = Math.random() < 0.5 ? 'B' : 'R'
-                  setAiLevel(selectedLevel)
-                  setAiSide(side)
-                  setMode('ai')
-                }}
+                onClick={() => startAi(Math.random() < 0.5 ? 'B' : 'R')}
                 className="px-4 py-2 text-base font-semibold"
                 ariaLabel={t('menu.ai.random', '🎲 Random')}
               >
                 {t('menu.ai.random', '🎲 Random')}
               </GameButton>
               <GameButton
-                onClick={() => {
-                  setAiLevel(selectedLevel)
-                  setAiSide('R')
-                  setMode('ai')
-                }}
+                onClick={() => startAi('R')}
                 className="!bg-indigo-500 !dark:!bg-indigo-400 !text-white !shadow-lg hover:!bg-indigo-600 hover:!dark:bg-indigo-300 focus:!ring-indigo-400 focus:!dark:ring-indigo-300 transition-colors px-4 py-2 text-base font-semibold"
               >
                 {t('menu.ai.second', '🐢 Second')}

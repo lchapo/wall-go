@@ -55,6 +55,18 @@ export class RandomAgent implements PlayerAgent {
     })
   }
 
+  // Abandon the in-flight search. The worker is recreated because `getAction`
+  // installs a fresh `onmessage` per call: reusing a worker that is still
+  // searching would deliver that stale result to the *next* getAction promise.
+  public cancel(): void {
+    this.worker.onmessage = null
+    this.worker.onerror = null
+    this.worker.terminate()
+    this.worker = new Worker(new URL('./AIWorker.ts', import.meta.url), {
+      type: 'module',
+    })
+  }
+
   public terminate(): void {
     if (this.worker) {
       this.worker.terminate()
