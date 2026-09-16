@@ -16,6 +16,13 @@ interface ScoreRowProps {
   children?: React.ReactNode
 }
 
+/**
+ * Score pills read left-to-right in action-phase turn order, matching the colour
+ * order the setup screen offers. That phase opens with the player *after* the one
+ * who places first (see `placeStone`), so this is `PLAYER_LIST` rotated by one.
+ */
+const DISPLAY_ORDER = PLAYER_LIST.map((_, i) => PLAYER_LIST[(i + 1) % PLAYER_LIST.length])
+
 const DOT: Record<Player, string> = {
   R: 'bg-rose-500 dark:bg-rose-400 border-rose-300 dark:border-rose-500',
   B: 'bg-indigo-500 dark:bg-indigo-400 border-indigo-300 dark:border-indigo-500',
@@ -35,7 +42,7 @@ export default function ScoreRow({
 
   return (
     <div className="flex flex-wrap gap-3 animate-fade-in items-center justify-center">
-      {PLAYER_LIST.map((p) => (
+      {DISPLAY_ORDER.map((p) => (
         <span
           key={p}
           className="flex items-center gap-2 font-mono text-lg px-2 py-1 rounded bg-white/70 dark:bg-zinc-800/80 shadow-sm border border-zinc-200 dark:border-zinc-700 text-zinc-800 dark:text-zinc-100 transition-all duration-300"
