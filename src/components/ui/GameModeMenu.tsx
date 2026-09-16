@@ -4,7 +4,7 @@ import GameButton from './GameButton'
 import LandingContent from './LandingContent'
 import { useTranslation } from 'react-i18next'
 import type { AiLevel, GameMode, AiSide } from '@/lib/types'
-import { useMatch } from '@/store/match'
+import { useMatch, DEFAULT_PVP_NAMES } from '@/store/match'
 
 const GAME_MODES: GameMode[] = ['pvp', 'ai']
 
@@ -26,8 +26,12 @@ export default function GameModeMenu({
   const [showPvpSetup, setShowPvpSetup] = useState(false)
   const [selectedLevel, setSelectedLevel] = useState<AiLevel>('middle')
   const storedNames = useMatch((s) => s.pvpNames)
-  const [name1, setName1] = useState(storedNames[0])
-  const [name2, setName2] = useState(storedNames[1])
+  // A stored name that is just the fallback ("Player 1", or its translation) is shown
+  // as the placeholder, not as a value the player would have to delete before typing.
+  const isFallbackName = (name: string, i: 0 | 1) =>
+    name === DEFAULT_PVP_NAMES[i] || name === t(`menu.pvp.player${i + 1}`, DEFAULT_PVP_NAMES[i])
+  const [name1, setName1] = useState(isFallbackName(storedNames[0], 0) ? '' : storedNames[0])
+  const [name2, setName2] = useState(isFallbackName(storedNames[1], 1) ? '' : storedNames[1])
   const [dark, setDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const stored = localStorage.getItem('theme')
