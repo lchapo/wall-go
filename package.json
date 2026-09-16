@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "preview": "vite preview",
+    "prerender": "node scripts/prerender.mjs",
     "test": "vitest run --coverage",
     "test:unit": "vitest run src --coverage",
     "test:ui": "vitest --ui",

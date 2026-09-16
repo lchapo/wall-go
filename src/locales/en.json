@@ -68,9 +68,69 @@
     "resetSeries": "Reset series"
   },
   "seo": {
-    "title": "Wall Go | Online Strategy Board Game | Devil's Plan Inspired",
-    "description": "Wall Go – Free online strategy board game inspired by Devil’s Plan. Play solo or with friends, territory scoring, undo/redo, and a modern UI. No signup needed, just play!",
-    "keywords": "Wall Go, Devil's Plan, board game, strategy game, undo redo, territory, open source, browser game, wallgo, devil's plan game, wall go single player"
+    "title": "Wall Go – Play Free Online, 2 Players or vs AI | Devil's Plan Board Game",
+    "description": "Play Wall Go free in your browser: the 7×7 wall-building territory game from Netflix's The Devil's Plan. Two players on one screen or against an AI, named players, series scoreboard, undo and move history. No signup.",
+    "keywords": "Wall Go, Wall Go game, Wall Go online, play Wall Go, Devil's Plan, Devil's Plan game, Devil's Plan season 2, strategy board game, territory game, 2 player game, browser game, free board game, 牆壁圍棋, wallgo"
+  },
+  "landing": {
+    "hint": "How to play ↓",
+    "about": {
+      "title": "What is Wall Go?",
+      "p1": "Wall Go is the wall-building territory game from season 2 of Netflix's The Devil's Plan. Two players share a 7×7 board: on every turn you move one of your pieces up to two squares, then drop a wall on one side of it. Walls never come down, so the board slowly splits into sealed rooms. When every piece is locked into its own room, the player with more squares wins.",
+      "p2": "This is a free, open-source browser version. There is nothing to install and no account to create: pick two-player or AI, and play."
+    },
+    "howTo": {
+      "title": "How to play Wall Go",
+      "steps": [
+        "Placement: each player starts with four pieces. Two are fixed for each colour; the other two are placed alternately (Red, Blue, Blue, Red).",
+        "Move: Blue starts. Choose one of your pieces and move it 0, 1 or 2 squares up, down, left or right. You cannot pass through walls or other pieces.",
+        "Build: after moving you must place a wall on an open side of that piece's square, even if you stood still. The board edge already counts as a wall.",
+        "Clock: each turn has 90 seconds. If it runs out, a wall is placed at random and the turn ends.",
+        "End: the game ends when every piece is sealed into a territory that holds only one colour.",
+        "Score: every square in your territory is worth one point. If totals tie, the larger single territory wins; if that ties too, it's a draw."
+      ],
+      "fullRules": "Read the full rules"
+    },
+    "features": {
+      "title": "Features",
+      "items": [
+        "Two players on one screen, with named players and a running series score",
+        "Play against the AI at four levels, from practice to hard",
+        "Undo, redo and a move-history slider to rewind any game",
+        "Six languages, dark mode, and a layout that works on phones",
+        "Open source under the MIT licence"
+      ]
+    },
+    "faq": {
+      "title": "Wall Go FAQ",
+      "items": [
+        {
+          "q": "Is Wall Go free to play?",
+          "a": "Yes. This version is free, has no ads and needs no account. The code is open source on GitHub."
+        },
+        {
+          "q": "Can I play Wall Go against the computer?",
+          "a": "Yes. Choose \"vs AI\" on the menu and pick one of four levels. You can also choose whether you move first or second."
+        },
+        {
+          "q": "Can two people play on one device?",
+          "a": "Yes. Choose \"2 Players\", enter both names, and pass the device between turns. Wins and draws are tallied across a series."
+        },
+        {
+          "q": "Is there online multiplayer?",
+          "a": "Not yet. Both players currently need to share a screen. Online play is on the roadmap."
+        },
+        {
+          "q": "Where does Wall Go come from?",
+          "a": "Wall Go was played in season 2 of The Devil's Plan, a Korean reality competition on Netflix. The show's version uses the same 7×7 board, movement and wall rules."
+        },
+        {
+          "q": "How is this different from the original schaoss/wall-go?",
+          "a": "It is a fork that adds named players, a series scoreboard, a move-history slider and other quality-of-life features. The rules and core gameplay are unchanged."
+        }
+      ]
+    },
+    "playNow": "Play now"
   },
   "nav": {
     "undo": "Undo",

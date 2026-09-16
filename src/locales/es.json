@@ -72,6 +72,66 @@
     "description": "Wall Go – Juego de estrategia gratuito inspirado en Devil’s Plan. Juega solo o con amigos, puntuación por territorio, deshacer/rehacer y una interfaz moderna. ¡Sin registro, solo juega!",
     "keywords": "Wall Go, Devil's Plan, juego de mesa, juego de estrategia, deshacer rehacer, territorio, código abierto, juego navegador, wallgo, juego del plan del diablo, wall go un jugador"
   },
+  "landing": {
+    "hint": "Cómo se juega ↓",
+    "about": {
+      "title": "¿Qué es Wall Go?",
+      "p1": "Wall Go es el juego de territorio y muros de la segunda temporada de The Devil's Plan, en Netflix. Dos jugadores comparten un tablero de 7×7: en cada turno mueves una de tus fichas hasta dos casillas y luego colocas un muro en uno de sus lados. Los muros nunca se quitan, así que el tablero se va dividiendo en zonas cerradas. Cuando todas las fichas quedan encerradas en su propia zona, gana quien tenga más casillas.",
+      "p2": "Esta es una versión gratuita y de código abierto para el navegador. No hay nada que instalar ni cuenta que crear: elige dos jugadores o IA, y juega."
+    },
+    "howTo": {
+      "title": "Cómo jugar a Wall Go",
+      "steps": [
+        "Colocación: cada jugador empieza con cuatro fichas. Dos de cada color tienen posición fija; las otras dos se colocan por turnos (Rojo, Azul, Azul, Rojo).",
+        "Movimiento: empieza Azul. Elige una de tus fichas y muévela 0, 1 o 2 casillas hacia arriba, abajo, izquierda o derecha. No puedes atravesar muros ni otras fichas.",
+        "Construcción: tras moverte debes colocar un muro en un lado libre de la casilla de esa ficha, aunque no te hayas movido. El borde del tablero ya cuenta como muro.",
+        "Reloj: cada turno dura 90 segundos. Si se agota, se coloca un muro al azar y el turno termina.",
+        "Final: la partida termina cuando todas las fichas están encerradas en un territorio con un solo color.",
+        "Puntuación: cada casilla de tu territorio vale un punto. Si hay empate, gana el territorio individual más grande; si también empata, es tablas."
+      ],
+      "fullRules": "Leer las reglas completas"
+    },
+    "features": {
+      "title": "Características",
+      "items": [
+        "Dos jugadores en una misma pantalla, con nombres y marcador acumulado de la serie",
+        "Juega contra la IA en cuatro niveles, de práctica a difícil",
+        "Deshacer, rehacer y un control deslizante de historial para rebobinar cualquier partida",
+        "Seis idiomas, modo oscuro y un diseño que funciona en el móvil",
+        "Código abierto bajo licencia MIT"
+      ]
+    },
+    "faq": {
+      "title": "Preguntas frecuentes sobre Wall Go",
+      "items": [
+        {
+          "q": "¿Wall Go es gratis?",
+          "a": "Sí. Esta versión es gratuita, no tiene anuncios y no necesita cuenta. El código es abierto y está en GitHub."
+        },
+        {
+          "q": "¿Puedo jugar a Wall Go contra el ordenador?",
+          "a": "Sí. Elige «vs IA» en el menú y escoge uno de los cuatro niveles. También puedes decidir si mueves primero o segundo."
+        },
+        {
+          "q": "¿Pueden jugar dos personas en un mismo dispositivo?",
+          "a": "Sí. Elige «2 jugadores», escribe los dos nombres y pasad el dispositivo entre turnos. Las victorias y los empates se acumulan a lo largo de la serie."
+        },
+        {
+          "q": "¿Hay multijugador en línea?",
+          "a": "Todavía no. Por ahora los dos jugadores tienen que compartir pantalla. El juego en línea está en la hoja de ruta."
+        },
+        {
+          "q": "¿De dónde viene Wall Go?",
+          "a": "Wall Go se jugó en la segunda temporada de The Devil's Plan, un concurso coreano de Netflix. La versión del programa usa el mismo tablero de 7×7 y las mismas reglas de movimiento y muros."
+        },
+        {
+          "q": "¿En qué se diferencia del schaoss/wall-go original?",
+          "a": "Es una bifurcación que añade nombres de jugador, marcador de serie, control deslizante de historial y otras mejoras de comodidad. Las reglas y la jugabilidad básica no cambian."
+        }
+      ]
+    },
+    "playNow": "Jugar ahora"
+  },
   "nav": {
     "undo": "Deshacer",
     "redo": "Rehacer",

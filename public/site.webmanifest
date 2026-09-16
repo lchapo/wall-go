@@ -1,0 +1,14 @@
+{
+  "name": "Wall Go",
+  "short_name": "Wall Go",
+  "description": "Play Wall Go free in your browser: the 7×7 wall-building territory game from The Devil's Plan.",
+  "start_url": "/wall-go/",
+  "scope": "/wall-go/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f43f5e",
+  "icons": [
+    { "src": "/wall-go/favicon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/wall-go/favicon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

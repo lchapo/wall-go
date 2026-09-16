@@ -28,6 +28,11 @@ jobs:
       # `build` is `tsc -b && vite build`, so type errors fail the deploy here.
       - run: bun run build
 
+      # Snapshot the rendered menu into dist/index.html so crawlers that don't
+      # run JavaScript still see the landing copy (scripts/prerender.mjs).
+      - run: bunx playwright install --with-deps chromium
+      - run: bun run prerender
+
       - uses: actions/upload-pages-artifact@v5
         with:
           path: ./dist

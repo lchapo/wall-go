@@ -1,8 +1,10 @@
 # Wall‑Go 🧱♟️
 
-![cover](public/cover.png)
+**▶ Play now: [lchapo.github.io/wall-go](https://lchapo.github.io/wall-go/)** – free, no signup.
 
-> Wall Go (牆壁圍棋) – Free, open-source online strategy board game inspired by Devil’s Plan 2. Supports 2–4 players, solo (AI) or with friends, territory scoring, undo/redo, and a modern UI. [Wall Go, Devil's Plan, React, TypeScript, GitHub, board game, browser game]
+[![Wall Go cover](public/cover.jpg)](https://lchapo.github.io/wall-go/)
+
+> Wall Go (牆壁圍棋) – play the 7×7 wall-building territory game from Netflix's *The Devil's Plan* in your browser. Two players on one screen or against an AI, named players, series scoreboard, undo and move history. Free and open source.
 
 ## About this fork
 
