@@ -1,6 +1,5 @@
 // src/components/ui/Navbar.tsx
 import GameButton from './GameButton'
-import type { Phase } from '@/lib/types'
 import LanguageThemeSwitcher from './LanguageThemeSwitcher'
 import { useTranslation } from 'react-i18next'
 
@@ -10,7 +9,9 @@ export default function Navbar({
   canUndo,
   canRedo,
   onHome,
-  phase,
+  paused,
+  canPause,
+  onTogglePause,
   dark,
   setDark,
 }: {
@@ -19,30 +20,37 @@ export default function Navbar({
   canUndo: boolean
   canRedo: boolean
   onHome: () => void
-  phase: Phase
+  paused: boolean
+  canPause: boolean
+  onTogglePause: () => void
   dark: boolean
   setDark: (d: boolean | ((d: boolean) => boolean)) => void
 }) {
   const { t } = useTranslation()
   return (
-    <div className="w-full flex justify-between transition-all duration-500">
-      <div className="flex gap-2 items-center">
-        <GameButton
-          onClick={onUndo}
-          disabled={!canUndo || phase === 'finished'}
-          ariaLabel={t('nav.undoAria', 'Undo')}
-        >
-          ↶ {t('nav.undo', 'Undo')}
+    <div className="w-full flex justify-between gap-1 transition-all duration-500">
+      {/* Labels collapse to their icons on narrow screens; the aria-label carries the meaning. */}
+      <div className="flex gap-1 sm:gap-2 items-center">
+        <GameButton onClick={onUndo} disabled={!canUndo} ariaLabel={t('nav.undoAria', 'Undo')}>
+          ↶<span className="hidden sm:inline"> {t('nav.undo', 'Undo')}</span>
+        </GameButton>
+        <GameButton onClick={onRedo} disabled={!canRedo} ariaLabel={t('nav.redoAria', 'Redo')}>
+          ↷<span className="hidden sm:inline"> {t('nav.redo', 'Redo')}</span>
         </GameButton>
         <GameButton
-          onClick={onRedo}
-          disabled={!canRedo || phase === 'finished'}
-          ariaLabel={t('nav.redoAria', 'Redo')}
+          onClick={onTogglePause}
+          disabled={!canPause}
+          active={paused}
+          ariaLabel={paused ? t('nav.resume', 'Resume') : t('nav.pause', 'Pause')}
         >
-          ↷ {t('nav.redo', 'Redo')}
+          {paused ? '▶' : '⏸'}
+          <span className="hidden sm:inline">
+            {' '}
+            {paused ? t('nav.resume', 'Resume') : t('nav.pause', 'Pause')}
+          </span>
         </GameButton>
       </div>
-      <div className="flex gap-2 items-center">
+      <div className="flex gap-1 sm:gap-2 items-center">
         <GameButton onClick={onHome} ariaLabel={t('nav.menu', 'Menu')}>
           <span role="img" aria-label={t('nav.menu', 'Menu')} className="text-xl">
             🏠

@@ -2,7 +2,6 @@
 import { create } from 'zustand'
 import { PLAYER_LIST, type Pos, type WallDir, type State } from '@/lib/types'
 import { makeInitialState, snapshotFromState, restoreSnapshot } from './gameState'
-import { createHistoryHandlers } from './history'
 import { placingTurnIndex, advanceTurn } from './actions'
 import { isLegalMove } from '@/utils/move'
 import { checkGameEnd } from '@/utils/game'
@@ -42,26 +41,6 @@ export const useGame = create<State>((_set, get) => {
       })
     }
   }
-  // --- history ---
-  createHistoryHandlers(
-    get,
-    set,
-    (state) => {
-      // snapshot 只存遊戲狀態，不存 _history/_future/undo/redo/canUndo/canRedo
-
-      const {
-        _history: _,
-        _future: __,
-        undo: ___,
-        redo: ____,
-        canUndo: _____,
-        canRedo: ______,
-        ...rest
-      } = state
-      return snapshotFromState(rest)
-    },
-    restoreSnapshot,
-  )
   const PLAYERS = [...PLAYER_LIST]
 
   // 初始化時 _history 應包含初始狀態
@@ -97,6 +76,23 @@ export const useGame = create<State>((_set, get) => {
         ...restoreSnapshot(next),
         _history: [..._history, ..._future.slice(0, idx + 1)],
         _future: _future.slice(idx + 1),
+      })
+    },
+    jumpTo(index: number) {
+      // `_history ++ _future` is one continuous timeline; undo/redo only move the
+      // split point. Jumping is therefore just choosing a new split point, in
+      // either direction, without discarding the redo tail.
+      const { _history, _future } = get()
+      const timeline = [..._history, ..._future]
+      if (timeline.length === 0) return
+      const i = Math.min(Math.max(index, 0), timeline.length - 1)
+      // Already live. Never re-apply the top of history: `setPhase` mutates phase
+      // without pushing, so the top snapshot can legitimately drift from live state.
+      if (i === _history.length - 1) return
+      set({
+        ...restoreSnapshot(timeline[i]),
+        _history: timeline.slice(0, i + 1),
+        _future: timeline.slice(i + 1),
       })
     },
     setHumanSide(side) {

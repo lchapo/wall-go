@@ -25,7 +25,13 @@
       "back": "뒤로"
     },
     "confirmHome": "게임이 아직 끝나지 않았습니다. 홈으로 돌아가시겠습니까?\n현재 진행 상황이 사라집니다.",
-    "home": "홈으로 돌아가기"
+    "home": "홈으로 돌아가기",
+    "pvp": {
+      "names": "플레이어 이름:",
+      "player1": "플레이어 1",
+      "player2": "플레이어 2",
+      "playsRed": "누가 빨강(선공)을 맡나요?"
+    }
   },
   "rule": {
     "title": "게임 규칙 안내",
@@ -49,7 +55,13 @@
       "left": "왼쪽",
       "right": "오른쪽",
       "aria": "({{x}},{{y}}) 위치에 {{dir}} 벽 설치"
-    }
+    },
+    "paused": "일시정지됨",
+    "you": "나",
+    "ai": "AI",
+    "wins_other": "{{count}}승",
+    "draws_other": "{{count}}무",
+    "resetSeries": "전적 초기화"
   },
   "seo": {
     "title": "Wall Go | 전략 보드게임 | 데빌스 플랜 영감 기반",
@@ -61,6 +73,15 @@
     "redo": "다시 실행",
     "undoAria": "실행 취소",
     "redoAria": "다시 실행",
-    "menu": "메뉴"
+    "menu": "메뉴",
+    "pause": "일시정지",
+    "resume": "계속",
+    "pauseAria": "일시정지"
+  },
+  "history": {
+    "moveCounter": "{{current}} / {{total}} 수",
+    "jumpTo": "{{n}} 수로 이동",
+    "sliderAria": "이전 수로 되돌리기",
+    "previewing": "(미리보기)"
   }
 }

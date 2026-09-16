@@ -25,7 +25,13 @@
       "back": "Volver"
     },
     "confirmHome": "El juego no ha terminado. ¿Seguro que quieres volver al inicio?\nEl progreso actual se perderá.",
-    "home": "Inicio"
+    "home": "Inicio",
+    "pvp": {
+      "names": "Nombres de los jugadores:",
+      "player1": "Jugador 1",
+      "player2": "Jugador 2",
+      "playsRed": "¿Quién juega con Rojo (mueve primero)?"
+    }
   },
   "rule": {
     "title": "Reglas del Juego",
@@ -49,7 +55,15 @@
       "left": "izquierda",
       "right": "derecha",
       "aria": "Construir muro {{dir}} en ({{x}},{{y}})"
-    }
+    },
+    "paused": "En pausa",
+    "you": "Tú",
+    "ai": "IA",
+    "wins_one": "{{count}} victoria",
+    "wins_other": "{{count}} victorias",
+    "draws_one": "{{count}} empate",
+    "draws_other": "{{count}} empates",
+    "resetSeries": "Reiniciar serie"
   },
   "seo": {
     "title": "Wall Go | Juego de Estrategia Online | Inspirado en Devil’s Plan",
@@ -61,6 +75,15 @@
     "redo": "Rehacer",
     "undoAria": "Deshacer",
     "redoAria": "Rehacer",
-    "menu": "Menú"
+    "menu": "Menú",
+    "pause": "Pausa",
+    "resume": "Reanudar",
+    "pauseAria": "Pausa"
+  },
+  "history": {
+    "moveCounter": "Jugada {{current}} / {{total}}",
+    "jumpTo": "Ir a la jugada {{n}}",
+    "sliderAria": "Retroceder a una jugada anterior",
+    "previewing": "(vista previa)"
   }
 }
