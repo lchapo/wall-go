@@ -9,16 +9,28 @@ export default function Footer() {
     >
       <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-4">
         <span>
-          © 2025 Gary Chu &nbsp;·&nbsp; Made with <span className="text-rose-400">♥</span>
+          © 2026 Lucas Chapin &nbsp;·&nbsp; Based on Wall‑Go by Gary Chu &nbsp;·&nbsp; Made with{' '}
+          <span className="text-rose-400">♥</span>
         </span>
-        <a
-          href="https://github.com/schaoss/wall-go"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
-        >
-          GitHub
-        </a>
+        <span>
+          <a
+            href="https://github.com/lchapo/wall-go"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
+          >
+            GitHub
+          </a>
+          &nbsp;·&nbsp;
+          <a
+            href="https://github.com/schaoss/wall-go"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-indigo-500 dark:hover:text-indigo-300 transition-colors"
+          >
+            Original
+          </a>
+        </span>
       </div>
     </footer>
   )
