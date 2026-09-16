@@ -5,7 +5,7 @@ import GameButton from './GameButton'
 interface ColorPickDialogProps {
   open: boolean
   names: [string, string]
-  /** Called with the name that plays Red (Red places first; Blue opens the action phase). */
+  /** Called with the name that plays Red (Red always moves first). */
   onPick: (redName: string) => void
   onCancel: () => void
 }
@@ -53,15 +53,14 @@ export default function ColorPickDialog({ open, names, onPick, onCancel }: Color
       <div className="relative max-w-xs w-[90vw] rounded-2xl shadow-2xl bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 animate-fade-in">
         <div className="flex flex-col gap-4 p-6">
           <div className="text-lg font-extrabold text-center tracking-tight">
-            {t('menu.pvp.playsBlue', 'Who plays Blue (moves first)?')}
+            {t('menu.pvp.playsRed', 'Who plays Red (moves first)?')}
           </div>
           <div className="flex flex-col gap-3">
-            {/* Blue leads the label, so it leads the buttons; `onPick` still takes Red. */}
-            <GameButton onClick={() => onPick(second)} ariaLabel={first}>
-              🔵 {first} · 🔴 {second}
+            <GameButton onClick={() => onPick(first)} ariaLabel={first}>
+              🔴 {first} · 🔵 {second}
             </GameButton>
-            <GameButton onClick={() => onPick(first)} ariaLabel={second}>
-              🔵 {second} · 🔴 {first}
+            <GameButton onClick={() => onPick(second)} ariaLabel={second}>
+              🔴 {second} · 🔵 {first}
             </GameButton>
           </div>
           <GameButton onClick={onCancel} text ariaLabel={t('common.cancel', 'Cancel')}>

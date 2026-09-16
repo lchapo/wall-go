@@ -114,10 +114,7 @@ export const useGame = create<State>((_set, get) => {
         const nextIdx = placingTurnIndex(newTotal, players.length)
         const nextPlayer = players[nextIdx]
         const allDone = Object.values(next.stonesPlaced).every((c) => c === stonesLimit)
-        // The placement snake ends on the player who opened it, so continuing it would
-        // give Red both the first counter and the first action. Hand the opening action
-        // to the next player instead.
-        next.turn = allDone ? players[(currentIdx + 1) % players.length] : nextPlayer
+        next.turn = nextPlayer
         next.phase = (allDone ? 'playing' : 'placing') as import('@/lib/types').Phase
         next.selected = undefined
         next.legal = new Set<string>()
