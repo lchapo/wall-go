@@ -12,9 +12,17 @@ beforeAll(() => {
 
 import { act, renderHook } from '@testing-library/react'
 import { useGame } from './index'
-import { PLAYER_LIST, STONES_PER_PLAYER, type Pos, type State } from '@/lib/types'
+import { PLAYER_LIST, STONES_PER_PLAYER, type Cell, type Pos, type State } from '@/lib/types'
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { DOMWindow } from 'jsdom'
+import { getTerritoryMap } from '@/utils/territory'
+import { snapshotFromState } from './gameState'
+import {
+  makeEmptyBoard,
+  sealedSingle,
+  sealedWithRoom,
+  addOpenStones,
+} from '@/utils/sealedFixtures.test-helpers'
 
 type GameHook = { current: State }
 
@@ -31,6 +39,26 @@ function finishPlacing(result: GameHook) {
       result.current.placeStone({ x, y: 0 })
     })
   }
+}
+
+/**
+ * Drop straight into the action phase on a hand-built board, Red to move. The
+ * board becomes the root of the timeline so undo can rewind to it.
+ */
+function startPlayingOn(board: Cell[][]) {
+  act(() => {
+    useGame.setState({
+      board,
+      phase: 'playing',
+      turn: 'R',
+      selected: undefined,
+      legal: new Set(),
+      stepsTaken: 0,
+      skipReason: undefined,
+      result: undefined,
+    })
+    useGame.setState({ _history: [snapshotFromState(useGame.getState())], _future: [] })
+  })
 }
 
 describe('Game Store', () => {
@@ -361,6 +389,107 @@ describe('Game Store', () => {
       act(() => result.current.undo())
       expect(result.current._history.length).toBeLessThan(before)
       expect(result.current.phase).not.toBe('finished')
+    })
+  })
+
+  describe('sealed stones', () => {
+    it('a stone sealed inside claimed territory cannot be selected, moved, or build', () => {
+      const { result } = renderHook(() => useGame())
+      startPlayingOn(addOpenStones(sealedWithRoom()))
+      const historyLength = result.current._history.length
+
+      act(() => result.current.selectStone({ x: 0, y: 0 }))
+      expect(result.current.selected).toBeUndefined()
+      expect(result.current.legal.size).toBe(0)
+
+      // (1,0) is empty and inside the room, so the old rule would have allowed this.
+      act(() => result.current.moveTo({ x: 1, y: 0 }))
+      expect(result.current.board[0][0].stone).toBe('R')
+      expect(result.current.board[0][1].stone).toBe(null)
+
+      act(() => result.current.buildWall({ x: 0, y: 0 }, 'right'))
+      expect(result.current.board[0][1].wallLeft).toBe(null)
+      expect(result.current.turn).toBe('R')
+      expect(result.current._history).toHaveLength(historyLength)
+
+      // The free stone still works.
+      act(() => result.current.selectStone({ x: 3, y: 3 }))
+      expect(result.current.selected).toEqual({ x: 3, y: 3 })
+      expect(result.current.legal.size).toBeGreaterThan(0)
+    })
+
+    it('a stone becomes unselectable on the turn after it seals itself in', () => {
+      const { result } = renderHook(() => useGame())
+      const board = addOpenStones(makeEmptyBoard())
+      board[0][1].stone = 'R'
+      board[1][0].wallTop = 'R'
+      board[1][1].wallTop = 'R'
+      startPlayingOn(board)
+
+      // Red closes the last gap of the room {(0,0), (1,0)}.
+      act(() => result.current.selectStone({ x: 1, y: 0 }))
+      act(() => result.current.buildWall({ x: 1, y: 0 }, 'right'))
+      expect(result.current.board[0][2].wallLeft).toBe('R')
+      // The room is now tinted and scored as Red's, the same test the rule uses.
+      const territory = getTerritoryMap(result.current.board)
+      expect(territory[0][0]).toBe('R')
+      expect(territory[0][1]).toBe('R')
+      expect(result.current.phase).toBe('playing')
+      expect(result.current.turn).toBe('B')
+      expect(result.current.skipReason).toBeUndefined()
+
+      // Blue takes an ordinary turn.
+      act(() => result.current.selectStone({ x: 3, y: 4 }))
+      act(() => result.current.buildWall({ x: 3, y: 4 }, 'bottom'))
+      expect(result.current.turn).toBe('R')
+
+      act(() => result.current.selectStone({ x: 1, y: 0 }))
+      expect(result.current.selected).toBeUndefined()
+      act(() => result.current.selectStone({ x: 3, y: 3 }))
+      expect(result.current.selected).toEqual({ x: 3, y: 3 })
+    })
+
+    it('sealing the last free stones ends the game through scoring, not a skip', () => {
+      const { result } = renderHook(() => useGame())
+      // Blue at (0,0) and Red at (1,0) share the open board; one wall between
+      // them shuts Blue into a single cell and leaves Red alone with the rest.
+      const board = makeEmptyBoard()
+      board[0][0].stone = 'B'
+      board[0][1].stone = 'R'
+      board[1][0].wallTop = 'B'
+      startPlayingOn(board)
+
+      act(() => result.current.selectStone({ x: 1, y: 0 }))
+      act(() => result.current.buildWall({ x: 1, y: 0 }, 'left'))
+      expect(result.current.phase).toBe('finished')
+      expect(result.current.result?.finished).toBe(true)
+      expect(result.current.result?.winner).toBe('R')
+      expect(result.current.skipReason).toBeUndefined()
+      expect(result.current.selected).toBeUndefined()
+    })
+
+    it('undoing the sealing wall makes the stone selectable again', () => {
+      const { result } = renderHook(() => useGame())
+      const board = addOpenStones(makeEmptyBoard())
+      board[0][0].stone = 'R'
+      board[1][0].wallTop = 'R'
+      startPlayingOn(board)
+
+      act(() => result.current.selectStone({ x: 0, y: 0 }))
+      act(() => result.current.buildWall({ x: 0, y: 0 }, 'right'))
+      expect(getTerritoryMap(result.current.board)[0][0]).toBe('R')
+
+      act(() => result.current.undo())
+      expect(result.current.board[0][1].wallLeft).toBe(null)
+      act(() => result.current.selectStone({ x: 0, y: 0 }))
+      expect(result.current.selected).toEqual({ x: 0, y: 0 })
+    })
+
+    it('a sealed single stone stays put through a whole round', () => {
+      const { result } = renderHook(() => useGame())
+      startPlayingOn(addOpenStones(sealedSingle()))
+      act(() => result.current.selectStone({ x: 0, y: 0 }))
+      expect(result.current.selected).toBeUndefined()
     })
   })
 })

@@ -4,6 +4,7 @@ import { PLAYER_LIST, type Pos, type WallDir, type State } from '@/lib/types'
 import { makeInitialState, snapshotFromState, restoreSnapshot } from './gameState'
 import { placingTurnIndex, advanceTurn } from './actions'
 import { isLegalMove } from '@/utils/move'
+import { isStoneSealed } from '@/utils/territory'
 import { checkGameEnd } from '@/utils/game'
 import { isHumanTurn } from '@/utils/player'
 
@@ -136,6 +137,9 @@ export const useGame = create<State>((_set, get) => {
         if (phase !== 'playing') return state
         if (stepsTaken > 0) return state
         if (board[pos.y][pos.x].stone !== turn) return state
+        // A stone sealed inside claimed territory has finished the game: it can
+        // neither move nor build, so it cannot be selected at all.
+        if (isStoneSealed(board, pos)) return state
         const legal = new Set<string>()
         for (let yy = 0; yy < board.length; yy++) {
           for (let xx = 0; xx < board.length; xx++) {

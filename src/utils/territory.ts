@@ -1,5 +1,5 @@
 // src/utils/territory.ts
-import type { GameSnapshot, Player, Cell } from '@/lib/types'
+import type { Player, Cell, Pos } from '@/lib/types'
 import { floodRegions } from './region'
 
 // 回傳每格領地歸屬（純淨區域才標記，否則為 null）
@@ -21,13 +21,17 @@ export function getTerritoryMap(board: Cell[][]): (Player | null)[][] {
   return territory
 }
 
-export function isInPureTerritory(
-  gameState: GameSnapshot,
-  pos: { x: number; y: number },
-  player: string,
-  territoryMap = getTerritoryMap(gameState.board),
+/**
+ * A stone is sealed once its wall-bounded room holds stones of one colour only.
+ * This is exactly the test `getTerritoryMap` uses to tint a cell and score it,
+ * so "the piece can no longer act" and "the room is claimed" always agree.
+ *
+ * Callers that loop over many stones should compute the map once and pass it in.
+ */
+export function isStoneSealed(
+  board: Cell[][],
+  pos: Pos,
+  territoryMap: (Player | null)[][] = getTerritoryMap(board),
 ): boolean {
-  if (territoryMap[pos.y][pos.x] !== player) return false
-
-  return true
+  return board[pos.y][pos.x].stone !== null && territoryMap[pos.y][pos.x] !== null
 }

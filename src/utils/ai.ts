@@ -1,6 +1,7 @@
 import type { PlayerAction, GameSnapshot, Cell, Player, Pos } from '@/lib/types'
 import { isLegalMove } from './move'
 import { getLegalWallActions } from './wall'
+import { getTerritoryMap, isStoneSealed } from './territory'
 
 export function getRandomAction(actions: PlayerAction[] = []): PlayerAction | null {
   if (actions.length === 0) return null
@@ -13,9 +14,11 @@ export function getRandomWallActionForPlayer(
 ): PlayerAction | null {
   const actions: PlayerAction[] = []
   const { board } = state
+  const territoryMap = getTerritoryMap(board)
   for (let y = 0; y < board.length; y++) {
     for (let x = 0; x < board.length; x++) {
       if (board[y][x].stone !== player) continue
+      if (isStoneSealed(board, { x, y }, territoryMap)) continue
       actions.push(...getLegalWallActions(board, x, y))
     }
   }
@@ -45,9 +48,12 @@ export function getLegalActions(gameState: GameSnapshot): PlayerAction[] {
       }
     }
   } else if (phase === 'playing') {
+    const territoryMap = getTerritoryMap(board)
     for (let y = 0; y < board.length; y++) {
       for (let x = 0; x < board.length; x++) {
         if (board[y][x].stone !== turn) continue // 只考慮自己的棋子
+        // A stone sealed inside claimed territory can neither move nor build.
+        if (isStoneSealed(board, { x, y }, territoryMap)) continue
         // 移動+建牆
 
         getLegalDestinations(gameState, { x, y }).forEach((pos) => {

@@ -40,6 +40,10 @@ export default function Cell({
   territoryOwner,
 }: CellProps) {
   const posKey = getPosKey({ x, y })
+  // A stone inside claimed territory is sealed: it can no longer move or build,
+  // so it must not be selectable. `territoryOwner` is the same map that tints
+  // the cell, so the affordance always matches what the player sees.
+  const stoneCanAct = phase === 'playing' && cell.stone === turn && !territoryOwner
   // --- 棋子移動動畫 ---
   const stoneRef = useRef<HTMLButtonElement>(null)
   const prevPosRef = useRef<{ x: number; y: number } | null>(null)
@@ -150,12 +154,11 @@ export default function Cell({
             playerColorClass(cell.stone),
             'shadow-lg drop-shadow-md',
             'transition-all duration-300',
-            'hover:scale-110',
             'flex items-center justify-center',
             'border border-zinc-200 dark:border-zinc-700',
             'animate-stone-move',
-            // 只有輪到該玩家時才是 pointer
-            phase === 'playing' && cell.stone === turn ? 'cursor-pointer' : 'cursor-default',
+            // 只有輪到該玩家、且棋子尚未被封閉時才是 pointer
+            stoneCanAct ? 'cursor-pointer hover:scale-110' : 'cursor-default',
           )}
           style={{
             width: '70%',
@@ -165,9 +168,7 @@ export default function Cell({
             maxWidth: '60px',
             maxHeight: '60px',
           }}
-          onClick={() =>
-            phase === 'playing' && cell.stone === turn && selectStone && selectStone({ x, y })
-          }
+          onClick={() => stoneCanAct && selectStone && selectStone({ x, y })}
         />
       )}
 
