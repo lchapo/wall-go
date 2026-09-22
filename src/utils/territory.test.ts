@@ -1,6 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { getTerritoryMap } from './territory'
+import { getTerritoryMap, isStoneSealed } from './territory'
 import type { Cell } from '@/lib/types'
+import {
+  sealedSingle,
+  sealedWithRoom,
+  mixedRoom,
+  addOpenStones,
+} from './sealedFixtures.test-helpers'
 
 describe('getTerritoryMap', () => {
   it('one stone, fully walled, territory belongs to owner', () => {
@@ -55,5 +61,32 @@ describe('getTerritoryMap', () => {
         expect(territory[y][x]).toBe(null)
       }
     }
+  })
+})
+
+describe('isStoneSealed', () => {
+  it('is true for a stone alone in a walled room, whatever the room size', () => {
+    expect(isStoneSealed(sealedSingle(), { x: 0, y: 0 })).toBe(true)
+    expect(isStoneSealed(sealedWithRoom(), { x: 0, y: 0 })).toBe(true)
+  })
+
+  it('is false while an opposing stone shares the room', () => {
+    const board = mixedRoom()
+    expect(isStoneSealed(board, { x: 0, y: 0 })).toBe(false)
+    expect(isStoneSealed(board, { x: 1, y: 0 })).toBe(false)
+  })
+
+  it('is false for stones in the open and for empty cells', () => {
+    const board = addOpenStones(sealedSingle())
+    expect(isStoneSealed(board, { x: 3, y: 3 })).toBe(false)
+    expect(isStoneSealed(board, { x: 3, y: 4 })).toBe(false)
+    expect(isStoneSealed(board, { x: 1, y: 0 })).toBe(false)
+  })
+
+  it('gives the same answer with a precomputed territory map', () => {
+    const board = addOpenStones(sealedWithRoom())
+    const map = getTerritoryMap(board)
+    expect(isStoneSealed(board, { x: 0, y: 0 }, map)).toBe(true)
+    expect(isStoneSealed(board, { x: 3, y: 3 }, map)).toBe(false)
   })
 })
